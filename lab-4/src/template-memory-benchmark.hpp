@@ -32,6 +32,7 @@ private:
             if (const float* float_ptr = reinterpret_cast<float*>(number); float_ptr[0] == 50.0f) {
                 std::cout << "number[0] == 50.0f\n";
             }
+#ifndef SERVER
         } else if constexpr (std::is_same_v<T, __m256>) {
             if (const float* float_ptr = reinterpret_cast<float*>(number); float_ptr[0] == 50.0f) {
                 std::cout << "number[0] == 50.0f\n";
@@ -40,6 +41,8 @@ private:
             if (const auto* float_ptr = reinterpret_cast<float*>(number); float_ptr[0] == 50.0f) {
                 std::cout << "number[0] == 50.0f\n";
             }
+#endif
+
         } else {
             if (*number == 50) {
                 std::cout <<"number == 50\n";
@@ -61,6 +64,7 @@ public:
                     sum,
                     _mm_load_ps(reinterpret_cast<const float*>(&array[i]))
                 );
+#ifndef SERVER
             } else if constexpr (std::is_same_v<T, __m256>) {
                 sum = _mm256_add_ps(
                     sum,
@@ -71,6 +75,8 @@ public:
                     sum,
                     _mm512_load_ps(reinterpret_cast<const float*>(&array[i]))
                 );
+#endif
+
             } else {
                 sum += array[i];
             }
@@ -85,10 +91,13 @@ public:
         for (int i {}; i < m_array_size; ++i) {
             if constexpr (std::is_same_v<T, __m128>) {
                 _mm_store_ps(reinterpret_cast<float*>(&array[i]), _mm_set1_ps(1.0f));
+#ifndef SERVER
             } else if constexpr (std::is_same_v<T, __m256>) {
                 _mm256_store_ps(reinterpret_cast<float*>(&array[i]), _mm256_set1_ps(1.0f));
             } else if constexpr (std::is_same_v<T, __m512>) {
                 _mm512_store_ps(reinterpret_cast<float*>(&array[i]), _mm512_set1_ps(1.0f));
+#endif
+
             } else {
                 array[i] = 1;
             }
@@ -104,12 +113,14 @@ public:
              if constexpr (std::is_same_v<T, __m128>) {
                  _mm_store_ps(reinterpret_cast<float*>(&array1[i]),
                 _mm_load_ps(reinterpret_cast<const float*>(&array2[i])));
+#ifndef SERVER
              } else if constexpr (std::is_same_v<T, __m256>) {
                 _mm256_store_ps(reinterpret_cast<float*>(&array1[i]),
                     _mm256_load_ps(reinterpret_cast<const float*>(&array2[i])));
             } else if constexpr (std::is_same_v<T, __m512>) {
                 _mm512_store_ps(reinterpret_cast<float*>(&array1[i]),
                     _mm512_load_ps(reinterpret_cast<const float*>(&array2[i])));
+#endif
             } else {
                 array1[i] = array2[i];
             }

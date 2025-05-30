@@ -1,8 +1,11 @@
 #include "template-memory-benchmark.hpp"
 
 int main() {
-    // MemoryBenchmark<__m512>::test_for_type();
-    // MemoryBenchmark<__m256>::test_for_type();
+#ifndef SERVER
+    MemoryBenchmark<__m512>::test_for_type();
+    MemoryBenchmark<__m256>::test_for_type();
+#endif
+
     MemoryBenchmark<__m128>::test_for_type();
     MemoryBenchmark<double>::test_for_type();
     MemoryBenchmark<float>::test_for_type();

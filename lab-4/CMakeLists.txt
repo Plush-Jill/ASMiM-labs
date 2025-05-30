@@ -3,6 +3,22 @@ project(lab_4)
 
 set(CMAKE_CXX_STANDARD 17)
 
+add_executable(template-measuring-server
+        src/main.cpp
+        src/template-memory-benchmark.cpp
+        src/template-memory-benchmark.hpp
+)
+
+target_compile_options(template-measuring-server PRIVATE
+        -msse2
+#        -mavx2
+#        -mavx512f
+        -O0
+)
+
+target_compile_definitions(template-measuring-server PRIVATE SERVER)
+
+
 add_executable(template-measuring
         src/main.cpp
         src/template-memory-benchmark.cpp
@@ -11,10 +27,12 @@ add_executable(template-measuring
 
 target_compile_options(template-measuring PRIVATE
         -msse2
-#        -mavx2
-#        -mavx512f
+        -mavx2
+        -mavx512f
         -O0
 )
+
+
 
 add_executable(row-avx512-test src/row-avx512-test.cpp
         src/row-avx512-test.cpp)
