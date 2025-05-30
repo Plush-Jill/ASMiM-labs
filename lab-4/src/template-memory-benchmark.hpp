@@ -28,7 +28,11 @@ private:
     static constexpr long long m_data_size = sizeof(T);
     static constexpr long long m_array_size = GB / m_data_size;
     static constexpr void check_number(T* number) {
-        if constexpr (std::is_same_v<T, __m256>) {
+        if constexpr (std::is_same_v<T, __m128>) {
+            if (const float* float_ptr = reinterpret_cast<float*>(number); float_ptr[0] == 50.0f) {
+                std::cout << "number[0] == 50.0f\n";
+            }
+        } else if constexpr (std::is_same_v<T, __m256>) {
             if (const float* float_ptr = reinterpret_cast<float*>(number); float_ptr[0] == 50.0f) {
                 std::cout << "number[0] == 50.0f\n";
             }
