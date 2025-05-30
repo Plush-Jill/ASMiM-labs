@@ -52,11 +52,16 @@ public:
         T sum {};
         const auto start = std::chrono::high_resolution_clock::now();
         for (int i {}; i < m_array_size; ++i) {
-            if constexpr (std::is_same_v<T, __m256>) {
-                sum = _mm256_add_ps(
+            if constexpr(std::is_same_v<T, __m128>) {
+                sum = _mm_add_ps(
                     sum,
-                    _mm256_load_ps(reinterpret_cast<const float*>(&array[i]))
+                    _mm_load_ps(reinterpret_cast<const float*>(&array[i]))
                 );
+            // } else if constexpr (std::is_same_v<T, __m256>) {
+            //     sum = _mm256_add_ps(
+            //         sum,
+            //         _mm256_load_ps(reinterpret_cast<const float*>(&array[i]))
+            //     );
             // } else if constexpr (std::is_same_v<T, __m512>) {
             //     sum = _mm512_add_ps(
             //         sum,
@@ -74,8 +79,10 @@ public:
     static void measure_write(T* array) {
         const auto start = std::chrono::high_resolution_clock::now();
         for (int i {}; i < m_array_size; ++i) {
-            if constexpr (std::is_same_v<T, __m256>) {
-                _mm256_store_ps(reinterpret_cast<float*>(&array[i]), _mm256_set1_ps(1.0f));
+            if constexpr (std::is_same_v<T, __m128>) {
+                _mm_store_ps(reinterpret_cast<float*>(&array[i]), _mm_set1_ps(1.0f));
+            // } else if constexpr (std::is_same_v<T, __m256>) {
+            //     _mm256_store_ps(reinterpret_cast<float*>(&array[i]), _mm256_set1_ps(1.0f));
             // } else if constexpr (std::is_same_v<T, __m512>) {
             //     _mm512_store_ps(reinterpret_cast<float*>(&array[i]), _mm512_set1_ps(1.0f));
             } else {
@@ -90,9 +97,12 @@ public:
     static void measure_replace(T* array1, T* array2) {
         const auto start = std::chrono::high_resolution_clock::now();
         for (int i {}; i < m_array_size; ++i) {
-            if constexpr (std::is_same_v<T, __m256>) {
-                _mm256_store_ps(reinterpret_cast<float*>(&array1[i]),
-                    _mm256_load_ps(reinterpret_cast<const float*>(&array2[i])));
+             if constexpr (std::is_same_v<T, __m128>) {
+                 _mm_store_ps(reinterpret_cast<float*>(&array1[i]),
+                _mm_load_ps(reinterpret_cast<const float*>(&array2[i])));
+             // } else if constexpr (std::is_same_v<T, __m256>) {
+             //    _mm256_store_ps(reinterpret_cast<float*>(&array1[i]),
+             //        _mm256_load_ps(reinterpret_cast<const float*>(&array2[i])));
             // } else if constexpr (std::is_same_v<T, __m512>) {
             //     _mm512_store_ps(reinterpret_cast<float*>(&array1[i]),
             //         _mm512_load_ps(reinterpret_cast<const float*>(&array2[i])));
