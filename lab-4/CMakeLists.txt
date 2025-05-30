@@ -3,9 +3,6 @@ project(lab_4)
 
 set(CMAKE_CXX_STANDARD 17)
 
-
-add_executable(avx-thread-1 src/avx-thread-1.cpp)
-add_executable(int-thread-1 src/int-thread-1.cpp)
 add_executable(template-measuring
         src/main.cpp
         src/template-memory-benchmark.cpp
