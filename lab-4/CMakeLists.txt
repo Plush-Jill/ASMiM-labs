@@ -10,7 +10,7 @@ add_executable(template-measuring
 )
 
 target_compile_options(template-measuring PRIVATE
-#        -mavx2
+        -mavx2
 #        -mavx512f
         -O0
 )
